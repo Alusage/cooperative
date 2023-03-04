@@ -89,6 +89,7 @@ class AccountMove(models.Model):
             "share_unit_price": line.price_unit,
             "date": effective_date,
             "type": "subscription",
+            "move_id": self.id,
         }
 
     def get_membership_vals(self):

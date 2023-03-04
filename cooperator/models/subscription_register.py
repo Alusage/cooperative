@@ -1,9 +1,10 @@
 # Copyright 2019 Coop IT Easy SCRL fs
 #   Houssine Bakkali <houssine@coopiteasy.be>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
-
+import logging
 
 from odoo import api, fields, models
+_logger = logging.getLogger(__name__)
 
 
 @api.model
@@ -101,8 +102,23 @@ class SubscriptionRegister(models.Model):
         readonly=True,
         default=lambda self: self.env.user,
     )
+    move_id = fields.Many2one("account.move", string="Journal Entry")
+    force_cooperator = fields.boolean("Force cooperator on partner (for import needs)")
 
     _order = "register_number_operation asc"
+
+    @api.model
+    def import_subscription(self, vals):
+        _logger.debug(vals)
+
+    @api.model
+    def write(self, vals):
+        if vals.get("move_id", False):
+            cooperator_vals = {"cooperator": True}
+            if self.env['account.move'].browse([vals.get('move_id')]).has_reconciled_entries:
+                cooperator_vals['member'] = True
+            self.mapped(partner_id).write(cooperator_vals)
+        res = super(SubscriptionRegister, self).write(vals)
 
     @api.model
     def read_group(

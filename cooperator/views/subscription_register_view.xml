@@ -11,6 +11,7 @@
                 <field name="quantity" sum="Total quantity" />
                 <field name="share_unit_price" />
                 <field name="total_amount_line" sum="Total amount" />
+                <field name="move_id" string="Entry"/>
                 <field name="type" />
             </tree>
         </field>
@@ -40,6 +41,7 @@
                         <field name="share_to_short_name" />
                         <field name="quantity_to" />
                         <field name="share_to_unit_price" />
+                        <field name="move_id" string="Entry"/>
                         <field name="user_id" invisible="True" />
                     </group>
                 </group>
